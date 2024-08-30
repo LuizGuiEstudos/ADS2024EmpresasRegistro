@@ -1,89 +1,76 @@
 package main;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import entities.Aviao;
 import entities.Departamento;
 import entities.Empresa;
 import entities.Funcionario;
 
 public class Main {
 	
-	private static Scanner scan = new Scanner( System.in );
+	private static Scanner scan = new Scanner(System.in);
 	
 	private static ArrayList<Empresa> empresas = new ArrayList<Empresa>();
-	private static ArrayList<Departamento> departamentos  = new ArrayList<Departamento>();
+	private static ArrayList<Departamento> departamentos = new ArrayList<Departamento>();
 	private static ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
+	
 
 	public static void main(String[] args) {
 		
-		boolean run = true;
-		int opcaoCategoria = 0;
-		int acaoVoltar = 0;
+		//CRIAR ENTIDADES
+		//empresa
+		System.out.println( " #### REGISTRO DE NOVA EMPRESA ####" );
+		System.out.println( " >Digite as seguintes informações abaixo " );
+		System.out.println( "-CNPJ:" );
+		String CNPJ = scan.next();
+		System.out.println( "-nome fantasia:" );
+		String nomeFantasia = scan.next();
+		Empresa emp = new Empresa(CNPJ, nomeFantasia);
 		
-		//LOOP PRIMARIO - ESCOLHA CATEGORIA DE ACAO
-		while( run ) {
-			
-			opcaoCategoria = scan.nextInt();
-			
-			switch( opcaoCategoria ) {
-			case 1:
-				criarFuncionario();
-				break;
-			case 2:
-				criarDepartamento();
-				break;
-			case 3:
-				criarEmpresa();
-				break;
-			}
-			
-		}
+		empresas.add(emp);
+		//departamento
+		System.out.println( " #### REGISTRO DE NOVO DEPARTAMENTO ####" );
+		System.out.println( " >Digite as seguintes informações abaixo " );
+		System.out.println( "-nome do departamento:" );
+		String nomeDep = scan.next();
+		System.out.println( "-bloco:" );
+		String bloco = scan.next();
+		Departamento dep = new Departamento(nomeDep, bloco); 
 		
-	}
-	
-	private static void criarFuncionario() {
-		System.out.println("  Digite as seguintes informações do Funcionário... ");
-		System.out.println( "Nome: " );
-		String nome = scan.next();
-		System.out.println( "Salario (ex 1000.00): " );
+		departamentos.add(dep);
+		//funcionario
+		System.out.println( " #### REGISTRO DE NOVO DEPARTAMENTO ####" );
+		System.out.println( " >Digite as seguintes informações abaixo " );
+		System.out.println( "-nome do funcionário:" );
+		String nomeFunc = scan.next();
+		System.out.println( "-salário(ex 1000.00):" );
 		float salario = scan.nextFloat();
-		LocalDate admissao = null; // TODO - adicionar data
+		System.out.println( "-data de admissão:" );
+		String dtAdmissao = scan.next();
+		Funcionario func = new Funcionario(nomeFunc, salario, dtAdmissao);
 		
-		funcionarios.add( new Funcionario(nome, float, admissao) )
-//		private String nome;
-//		private float salario;
-//		private LocalDate dtAdmissao;
-		
-		
+		funcionarios.add(func);
+		//PRINT LISTAS
+		//empresas
+		System.out.println( " ---- PRINTANDO EMPRESAS ---- " );
+		for( int i=0; i<empresas.size(); i++ ) {
+			Empresa empI = empresas.get(i);
+			System.out.println( i + ".> " );
+			System.out.println( "CNPJ:" + empI.getCNPJ() );
+			System.out.println( "nome fantasia:" + empI.getNomeFantasia() );
+		}
+		//empresas
+				System.out.println( " ---- PRINTANDO EMPRESAS ---- " );
+				for( int i=0; i<empresas.size(); i++ ) {
+					Empresa empI = empresas.get(i);
+					System.out.println( i + ".> " );
+					System.out.println( "CNPJ:" + empI.getCNPJ() );
+					System.out.println( "nome fantasia:" + empI.getNomeFantasia() );
+				}
+		//CONTINUAR - terminar de printar as entidade
+				//relaciona-los
 	}
-	
-	private static void criarDepartamento() {
-		
-	}
-	
-	private static void criarEmpresa() {
-		String CNPJ;
-		String nomeFantasia;
-		
-		System.out.println( " Entrar com CNPJ da empresa: " );
-		CNPJ = scan.next();
-		System.out.println( " Entrar com Nome Fantasia da empresa: " );
-		nomeFantasia = scan.next();
-		
-		empresas.add( new Empresa(CNPJ, nomeFantasia) );
-		
-		
-	}
-	
-	private static addFuncionarioToDepartamento( Funcionario func ) {
-		
-	}
-	
-	private static addDepartamentoToEmpresa( Departamento dep ) {
-		
-	}
-	
 	
 }
