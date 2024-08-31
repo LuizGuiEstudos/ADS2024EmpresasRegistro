@@ -7,10 +7,21 @@ public class Departamento {
 	
 	private String nome;
 	private String bloco;
+	public ArrayList<Funcionario> getFuncionarios() { //><funcionarios
+		return funcionarios;
+	}
+	public void associarFuncionarios( Funcionario fun ) {
+		funcionarios.add(fun);
+	}
+	public String getNome() {
+		return nome;
+	}
+	public String getBloco() {
+		return bloco;
+	}
 	
 	public Departamento(String nome, String bloco) {
 		this.nome = nome;
 		this.bloco = bloco;
-		this.funcionarios = funcionarios;
 	}
 }

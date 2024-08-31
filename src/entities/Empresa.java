@@ -4,15 +4,18 @@ import java.util.ArrayList;
 
 public class Empresa {
 
-	private ArrayList<Departamento> departamentos = new ArrayList<Departamento>();
+	private static ArrayList<Departamento> departamentos = new ArrayList<Departamento>();
+	
 
 	private String CNPJ;
 	private String nomeFantasia;
 	
-	//Departamentos
 	
 	public ArrayList<Departamento> getDepartamentos() {
 		return departamentos;
+	}
+	public void associarDepartamento( Departamento dep ) { //>< Departamento
+		departamentos.add( dep );
 	}
 
 	public String getCNPJ() {
@@ -28,8 +31,6 @@ public class Empresa {
 		this.nomeFantasia = nomeFantasia;
 	}
 	
-	public void associarDepartamento( Departamento departamento ) {
-		departamentos.add(departamento);
-	}
+	
 	
 }
