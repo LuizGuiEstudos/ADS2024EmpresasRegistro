@@ -3,8 +3,6 @@ package main;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.plaf.BorderUIResource.EmptyBorderUIResource;
-
 import entities.Departamento;
 import entities.Empresa;
 import entities.Funcionario;
@@ -80,8 +78,7 @@ public class Main {
 		for( int i=0; i<emps.size(); i++ ) {
 			Empresa empI = emps.get(i);
 			System.out.println( i + ".> " );
-			System.out.println( "CNPJ: " + empI.getCNPJ() );
-			System.out.println( "nome fantasia: " + empI.getNomeFantasia() );
+			printEmpresa(empI);
 		}
 	}
 	
@@ -93,9 +90,7 @@ public class Main {
 		for( int i=0; i<funcs.size(); i++ ) {
 			Funcionario funcI = funcionarios.get(i);
 			System.out.println( i + ".> " );
-			System.out.println( "nome: " + funcI.getNome() );
-			System.out.println( "salario: " + funcI.getSalario() );
-			System.out.println( "data admissão: " + funcI.getDtAdmissao() );
+			printFuncionario(funcI);
 		}
 	}
 	
@@ -107,23 +102,63 @@ public class Main {
 		for( int i=0; i<departamentos.size(); i++ ) {
 			Departamento depI = departamentos.get(i);
 			System.out.println( i + ".> " );
-			System.out.println( "nome: " + depI.getNome() );
-			System.out.println( "bloco: " + depI.getBloco() );
+			printDepartamento(depI);
+			
 		}
 	}
+	//PRINT INFORMACOES ENTIDADE
+	//funcionario
+	private static void printFuncionario( Funcionario func ) {
+		System.out.println( "nome: " + func.getNome() );
+		System.out.println( "salario: " + func.getSalario() );
+		System.out.println( "data admissão: " + func.getDtAdmissao() );
+	}
+	//departamento
+	private static void printDepartamento( Departamento dep ) {
+		System.out.println( "nome: " + dep.getNome() );
+		System.out.println( "bloco: " + dep.getBloco() );
+	}
+	//empresa
+	private static void printEmpresa( Empresa emp ) {
+		System.out.println( "CNPJ: " + emp.getCNPJ() );
+		System.out.println( "nome fantasia: " + emp.getNomeFantasia() );
+	}
 	//RELACIONAMENTO
+	//departamento < funcionario
 	private static void relacionaDepartamentoFuncionario() {
 		Funcionario func;
 		Departamento dep;
 		
 		System.out.println( " ---- RELACIONANDO FUNCIONARIO COM DEPARTAMENTO ---- " );
 		func = selecionaFuncionario();
+		selecionadoFuncionario = func;
+		
 		dep = selecionaDepartamento();
+		selecionadoDepartamento = dep;
 		
+		relaciona_diretoDepartamentoFuncionario(dep, func);
 		
+		System.out.println( ">Funcionário " + func.getNome() + "associado ao Departamento: " + dep.getNome() + " " + dep.getBloco()  );
 	}
-	private static void relacionaDepartamentoFuncionario( Departamento dep, Funcionario func ) {
+	
+	private static void relaciona_diretoDepartamentoFuncionario( Departamento dep, Funcionario func ) {
 		dep.associarFuncionarios(func);
+	}
+	//empresa < departamento
+	private static void relacionaEmpresaDepartamento() {
+		Departamento dep;
+		Empresa emp;
+		
+		System.out.println( " ---- RELACIONANDO FUNCIONARIO COM DEPARTAMENTO ---- " );
+		dep = selecionaDepartamento();
+		selecionadoDepartamento = dep;
+		
+		emp = selecionaEmpresa();
+		selecionadoEmpresa = emp;
+		
+		relaciona_diretoEmpresaDepartamento(emp, dep);
+		
+		System.out.println( ">Departamento " + dep.getNome() + " " + dep.getBloco() + " associado a Empresa: " + emp.getNomeFantasia() );
 	}
 	private static void relaciona_diretoEmpresaDepartamento( Empresa emp, Departamento func ) {
 		emp.associarDepartamento( func );
@@ -153,8 +188,7 @@ public class Main {
 		int indice;
 		
 		System.out.println( " ---- SELEÇÃO DE DEPARTAMENTO ---- " );
-		printFuncionarios();
-		
+		printDepartamentos();
 		System.out.println();
 		System.out.println( "-Selecione o indice do Departamento desejado, apresentado acima: " );
 		System.out.println(SYMBOL_SCAN_IN);
@@ -164,21 +198,51 @@ public class Main {
 		return depToReturn;
 	}
 	//empresa
-		private static Empresa selecionaEmpresa() {
-			Empresa empToReturn;
-			int indice;
-			
-			System.out.println( " ---- SELEÇÃO DE EMPRESA ---- " );
-			printFuncionarios();
-			
-			System.out.println();
-			System.out.println( "-Selecione o indice da Empresa desejada, apresentado acima: " );
-			System.out.println(SYMBOL_SCAN_IN);
-			indice = scan.nextInt();
-			empToReturn = empresas.get(indice);
-			
-			return empToReturn;
+	private static Empresa selecionaEmpresa() {
+		Empresa empToReturn;
+		int indice;
+		
+		System.out.println( " ---- SELEÇÃO DE EMPRESA ---- " );
+		printEmpresas();
+		
+		System.out.println();
+		System.out.println( "-Selecione o indice da Empresa desejada, apresentado acima: " );
+		System.out.println(SYMBOL_SCAN_IN);
+		indice = scan.nextInt();
+		empToReturn = empresas.get(indice);
+		
+		return empToReturn;
+	}
+	//INFORMA
+	private static void informaFuncionario() {
+		selecionaFuncionario();
+		System.out.println( ">informações sobre o Funcionário selecionado: "  );
+		printFuncionario( selecionadoFuncionario );
+	}
+	private static void informaDepartamento() {
+		selecionaDepartamento();
+		System.out.println( ">informações sobre o Departamento selecionado: "  );
+		printDepartamento( selecionadoDepartamento );
+		System.out.println( " funcionários pertencentes:" );
+		printListaDeFuncionarios( selecionadoDepartamento.getFuncionarios() );
+		
+	}
+	private static void informaEmpresa() {
+		selecionaEmpresa();
+		System.out.println( ">Informações sobre a Empresa selecionado: "  );
+		printEmpresa( selecionadoEmpresa );
+		System.out.println( " departamentos pertencentes:" );
+		printListaDeDepartamentos( selecionadoEmpresa.getDepartamentos() );
+	}
+	//AUMENTO
+	private static void aumentoSalario(){
+		for( int i=0; i<funcionarios.size(); i++) {
+			Funcionario funcI = funcionarios.get(i);
+			float funcISal = funcI.getSalario();
+			funcISal += funcISal * .1; 
+			funcI.setSalario(funcISal);
 		}
+	}
 	
 	public static void main(String[] args) { //MAIN
 		
@@ -196,12 +260,14 @@ public class Main {
 			System.out.println( " Escolha as seguintes ações: 1-Adionar Funcionário, 2-Adicionar Departamento, 3-Adicionar Empresa \n" +
 					" 4-Listar Funcionarios, 5-Listar Departamentos, 6-Listar Empresas \n" +
 					" 7-Relacionar Funcionario com Departamento, 8-Relacionar Departamento com Empresa\n" +
+					" 9-Selecionar e ver informações de Funcionário, 10-Selecionar e ver informações de Departamento, 11-Selecionar e ver infomações de Empresa" +
+					" 12-Aumentar salário em 10% de todos os funcionários " +
 					" 0-sair");
 			System.out.print("<");
 			cmd = scan.next();
 			switch( cmd ) {
 			case "0":
-				System.out.println(">saindo...");
+				System.out.println(">saindo..."); break;
 			case "1": 
 				criarFuncionario(); break;
 			case "2": 
@@ -215,24 +281,23 @@ public class Main {
 				printDepartamentos();break;
 			case "6": 
 				printEmpresas();break;
-			}
+			case "7":
+				relacionaDepartamentoFuncionario(); break;
+			case "8":
+				relacionaEmpresaDepartamento(); break;
 			
+			case "9":
+				informaFuncionario(); break;
+			case "10":
+				informaDepartamento(); break;
+			case "11":
+				informaEmpresa(); break;
+			case "12":
+				aumentoSalario();
+				
+			} 
+
 		}
-		
-		//TODO - fazer por ações
-//		Funcionario func1 = criarFuncionario();
-//		Departamento dep1 = criarDepartamento();
-//		Empresa emp1 =  criarEmpresa();
-//		
-//		printEmpresas();
-//		printDepartamentos();
-//		printFuncionarios();
-//		
-//		relacionaDepartamentoFuncionario(dep1, func1);
-//		relacionaEmpresaDepartamento(emp1, dep1);
-		
-		//PRINTAR RELACIONAMENTOS
-		//mostrar departamentos da empresa
 		
 	}
 	

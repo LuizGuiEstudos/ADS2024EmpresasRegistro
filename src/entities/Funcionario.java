@@ -5,11 +5,17 @@ public class Funcionario {
 	private String nome;
 	private float salario;
 	private String dtAdmissao;
+	
+	private Departamento departamento;
+	
 	public String getNome() {
 		return nome;
 	}
 	public float getSalario() {
 		return salario;
+	}
+	public void setSalario( float sal ) {
+		salario = sal;
 	}
 	public String getDtAdmissao() {
 		return dtAdmissao;
